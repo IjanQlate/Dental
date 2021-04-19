@@ -54,9 +54,9 @@
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
 
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          Logout <i class="fas fa-sign-out-alt"></i>
+      <li class="nav-item badge-danger" >
+        <a class="nav-link" href="../logout.php" onclick="return confirm('Are you sure?');" style="color: white;">
+          Logout <i class="  fas fa-sign-out-alt"></i>
         </a>
       </li>
     </ul>

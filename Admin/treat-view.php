@@ -1,3 +1,8 @@
+ <?php
+ require "auth.php"; 
+ $query=mysqli_query($db, "SELECT * FROM treatment");
+  
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,39 +10,21 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="76x76" href="../src/dist/img/icon.png">
   <link rel="icon" type="image/png" href="../src/dist/img/icon.png">
-  <title>Dental | Treatment</title>
+  <title> Treatment List </title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../src/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../srchttps://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-  <!-- Tempusdominus Bootstrap 4 -->
-  <link rel="stylesheet" href="../src/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="../src/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="../src/plugins/jqvmap/jqvmap.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../src/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../src/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../src/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../src/dist/css/adminlte.min.css">
-  <!-- overlayScrollbars -->
-  <link rel="stylesheet" href="../src/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="../srcplugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="../src/plugins/summernote/summernote-bs4.min.css">
-    <!-- fullCalendar -->
-  <link rel="stylesheet" href="../src/plugins/fullcalendar/main.css">
 </head>
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="hold-transition sidebar-mini">
 <div class="wrapper">
-
-  <!-- Preloader
-  <div class="preloader flex-column justify-content-center align-items-center">
-    <img class="animation__shake" src="dist/img/AdminLTELogo.png" alt="AdminLTELogo" height="60" width="60">
-  </div> -->
-
   <!-- Navbar -->
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
     <!-- Left navbar links -->
@@ -48,15 +35,15 @@
       <li class="nav-item d-none d-sm-inline-block">
         <a href="index.php" class="nav-link">Home</a>
       </li>
+       
     </ul>
 
-    <!-- Right navbar links -->
+   <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-          Logout <i class="fas fa-sign-out-alt"></i>
+      <!-- Logout -->
+      <li class="nav-item badge-danger" >
+        <a class="nav-link" href="../logout.php" onclick="return confirm('Are you sure?');" style="color: white;">
+          Logout <i class="  fas fa-sign-out-alt"></i>
         </a>
       </li>
     </ul>
@@ -106,13 +93,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="app-request.php" class="nav-link">
+                <a href="app-request.php" class="nav-link ">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Appointment Request</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="app-upcoming.php" class="nav-link">
+                <a href="app-upcoming.php" class="nav-link active">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Upcoming Appointment</p>
                 </a>
@@ -127,8 +114,8 @@
          </li>
 
          <!-- Add Appointment -->
-         <li class="nav-item menu-open">
-            <a href="app-add.php" class="nav-link active">
+         <li class="nav-item">
+            <a href="app-add.php" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -147,7 +134,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="treat-view.php" class="nav-link active">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>View Treatment</p>
                 </a>
@@ -169,17 +156,17 @@
 
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
+   <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Treatment</h1>
+            <h1 class="m-0">Appointment</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Treatment</a></li>
-              <li class="breadcrumb-item active">Treatment List</li>
+              <li class="breadcrumb-item"><a href="#">Appointment</a></li>
+              <li class="breadcrumb-item active">Upcoming Appointment</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -190,19 +177,71 @@
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
-  
-        <!-- /.row (main row) -->
-      </div><!-- /.container-fluid -->
+        <div class="row">
+          <div class="col-12">
+            
+
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">List of patient's upcoming appointment</h3>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example1" class="table table-bordered table-striped table-hover">
+                  <thead>
+                  <tr>
+                    <th>No</th>
+                    <th>Treatment</th>
+                    <th>Fees</th>                    
+                    <th>Action</th>
+                  </tr>                   
+                  </thead>
+                  
+                  <tbody>
+                    <?php
+            $no = 0;
+            while ($data = mysqli_fetch_array ($query))
+            {
+            ?>
+                  <tr>
+                    <td><?php echo ++$no;?></td>
+                    <td><?php echo ucwords($data['treatment_name'])?></td>
+                    <td>RM <?php echo $data['fees']?></td>             
+                    <?php  echo '<td>&nbsp&nbsp 
+          <a href="treat_edit.php?id='.$data['treatment_ID'].'"> 
+           <i title="EDIT" style="font-size:24px" class="fas fa-edit"> </i></a> &nbsp&nbsp
+
+          <a href="treat_delete.php?id='.$data['treatment_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
+          <i style="font-size:24px" title="DELETE" class="fas fa-trash"></i></a></td>';  
+        echo '</tr>';?>
+                  </tr>
+                  
+ <?php } ?>  
+                 
+                  </tbody>
+                   
+                 
+                </table>
+                
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
   <footer class="main-footer">
-    <strong>Copyright &copy; Nurul Aishah Binti Rosli B031910219 .</strong>
-    All rights reserved.
-    <div class="float-right d-none d-sm-inline-block">
+    <div class="float-right d-none d-sm-block">
       <b>Version</b> 3.1.0
     </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
   </footer>
 
   <!-- Control Sidebar -->
@@ -215,41 +254,42 @@
 
 <!-- jQuery -->
 <script src="../src/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="../src/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
 <!-- Bootstrap 4 -->
 <script src="../src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../src/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../src/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../src/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../src/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../src/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="../src/plugins/moment/moment.min.js"></script>
-<script src="../src/plugins/daterangepicker/daterangepicker.js"></script>
-<!-- Tempusdominus Bootstrap 4 -->
-<script src="../src/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../src/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../src/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../src/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../src/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../src/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../src/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../src/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../src/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../src/plugins/jszip/jszip.min.js"></script>
+<script src="../src/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../src/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../src/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../src/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../src/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../src/dist/js/adminlte.js"></script>
+<script src="../src/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../src/dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../src/dist/js/pages/dashboard.js"></script>
-<!-- fullCalendar 2.2.5 -->
-<script src="../src/plugins/moment/moment.min.js"></script>
-<script src="../src/plugins/fullcalendar/main.js"></script>
-
+<!-- Page specific script -->
+<script>
+  $(function () {
+    $("#example1").DataTable({
+      "responsive": true, "lengthChange": false, "autoWidth": false,
+      "buttons": ["copy", "csv", "excel", "pdf", "print"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+    $('#example2').DataTable({
+      "paging": true,
+      "lengthChange": false,
+      "searching": false,
+      "ordering": true,
+      "info": true,
+      "autoWidth": false,
+      "responsive": true,
+    });
+  });
+</script>
 </body>
 </html>

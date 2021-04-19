@@ -12,7 +12,7 @@ if(isset($_SESSION['role'])){
 
 		#decline authentication
 		session_destroy(); #delete all session;
-		echo "<script>alert('Invalid role! Redirect to login page.');window.location='adminlogin.php';</script>";
+		echo "<script>alert('Invalid role! Redirect to login page.');window.location='index.php';</script>";
 	}
 
 	#check if admin exist
@@ -22,13 +22,13 @@ if(isset($_SESSION['role'])){
 
 	if(!$auth){
 		session_destroy(); #delete all session;
-		echo "<script>alert('Ops! Auth rejected! No data found!');window.location='../adminlogin.php';</script>";
+		echo "<script>alert('Ops! Auth rejected! No data found!');window.location='../admin-login.php';</script>";
 	}
 
 }else{
 
 	#decline authentication
-	echo "<script>alert('No session found! Please relogin.');window.location='../adminlogin.php';</script>";
+	echo "<script>alert('No session found! Please relogin.');window.location='../admin-login.php';</script>";
 }
 
 ?> 
