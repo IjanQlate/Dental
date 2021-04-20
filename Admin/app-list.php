@@ -1,18 +1,7 @@
  <?php
  require "auth.php"; 
-  function appStatus($status){
-
-  $statuses = [
-      1 => 'NEW',
-      2 => 'CONFIRM',
-      3 => 'DONE'
-  ];
  
-  return $statuses[$status];
-}
-
-
-   $query = "SELECT * FROM appointment as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID  WHERE status = 2 ORDER BY date ASC ";
+   $query = "SELECT * FROM appointment as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID ORDER BY date ASC ";
 
     $result = mysqli_query($db,$query);
       if ($result == TRUE){
@@ -26,7 +15,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="76x76" href="../src/dist/img/icon.png">
   <link rel="icon" type="image/png" href="../src/dist/img/icon.png">
-  <title> Upcoming Appointment </title>
+  <title> Completed Appointment</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -59,7 +48,7 @@
       <!-- Logout -->
       <li class="nav-item badge-danger" >
         <a class="nav-link" href="../logout.php" onclick="return confirm('Are you sure?');" style="color: white;">
-          Logout <i class="  fas fa-sign-out-alt"></i>
+          Logout <i class="fas fa-sign-out-alt"></i>
         </a>
       </li>
     </ul>
@@ -99,8 +88,8 @@
         </li>
 
         <!-- View Appointment -->
-        <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+        <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
                 View Appointment
@@ -115,13 +104,13 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="app-upcoming.php" class="nav-link">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Upcoming Appointment</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="app-complete.php" class="nav-link">
+                <a href="app-complete.php" class="nav-link active">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Completed Appointment</p>
                 </a>
@@ -130,8 +119,8 @@
          </li>
 
          <!-- Add Appointment -->
-         <li class="nav-item">
-            <a href="app-list.php" class="nav-link">
+         <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -163,7 +152,6 @@
               </li>       
             </ul>
         </li>
-        
         <!-- Report -->
          <li class="nav-item">
             <a href="#" class="nav-link">
@@ -173,7 +161,6 @@
               </p>
             </a>           
          </li>
-
         </ul>
      </nav>
       <!-- /.sidebar-menu -->
@@ -193,7 +180,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Appointment</a></li>
-              <li class="breadcrumb-item active">Upcoming Appointment</li>
+              <li class="breadcrumb-item active">Completed Appointment</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -210,7 +197,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of patient's upcoming appointment</h3>
+                <h3 class="card-title">List of Registered Patient</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -219,11 +206,10 @@
                   <tr>
                     <th>No</th>
                     <th>Fullname</th>
+                    <th>Gender</th>
                     <th>IC Number</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Treatment</th>
-                    <th>Status</th>
+                    <th>Phone Number</th>
+                    <th>Email</th>
                     <th>Action</th>
                   </tr>                   
                   </thead>
@@ -237,17 +223,13 @@
                   <tr>
                     <td><?php echo ++$no;?></td>
                     <td><?php echo ucwords($data['fullname'])?></td>
-                    <td><?php echo $data['IC']?></td>
-                    <td><?php echo date("d-M-Y", strtotime($data['date']))?></td>
-                    <td><?php echo ucwords($data['time'])?></td>
-                    <td><?php echo ucwords($data['treatment_name'])?></td>
-                    <td style="color: red;"><?php echo appStatus($data['status'])?></td>
-                     <?php  echo '<td>&nbsp&nbsp 
-          <a href="app-upcoming(view).php?id='.$data['app_ID'].'"> 
-          <i style="font-size:24px" title="VIEW MORE" class= "fas fa-eye"> </i></a> &nbsp&nbsp&nbsp
-
-          <a href="delete2.php?id='.$data['app_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
-          <i style="font-size:24px" title="DELETE" class="fas fa-trash"></i></a></td>';  
+                    <td><?php echo ucwords($data['gender'])?></td> 
+                    <td><?php echo $data['IC']?></td> 
+                    <td><?php echo $data['phoneNo']?></td>        
+                    <td><?php echo ($data['email'])?></td>
+             <?php  echo '<td>&nbsp&nbsp 
+          <a href="app-add.php?id='.$data['user_ID'].'"> 
+          <i title="ADD APPOINTMENT" style="font-size:24px" class="fa">&#xf0fe; </i></a></td>';  
         echo '</tr>';?>
                   </tr>
                   

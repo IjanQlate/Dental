@@ -1,4 +1,26 @@
+<?php
 
+ require "auth.php";
+
+  
+  $id = $_GET['id'];
+
+ 
+  $query = mysqli_query($db,"SELECT * FROM treatment WHERE treatment_ID='$id'");
+
+  
+  if(mysqli_num_rows($query) == 0){
+
+   
+    echo '<script>window.history.back()</script>';
+
+  }else{
+
+   
+    $data = mysqli_fetch_assoc($query); 
+
+  }
+  ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -190,7 +212,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Treatment</a></li>
-              <li class="breadcrumb-item active">Add Treatment</li>
+              <li class="breadcrumb-item active">Edit Treatment</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -206,19 +228,20 @@
           <div class="col-md-12">
          <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Add New Treatment</h3>
+                <h3 class="card-title">Edit Treatment</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form action="treat-add.php" method="post">
+              <form action="#" method="post">
+                <input type="hidden" name="id" value="<?php echo $id; ?>">
                 <div class="card-body">
                   <div class="form-group">
                     <label for="treatment">Treatment</label>
-                    <input type="text" class="form-control" name="treatment_name" id="treatment_name" placeholder="Enter treatment">
+                    <input type="text" class="form-control" name="treatment_name" id="treatment_name" value="<?php echo $data['treatment_name']; ?> ">
                   </div>
                   <div class="form-group">
                     <label for="fees">Fees (RM)</label>
-                    <input type="text" class="form-control" name="fees" id="fees" placeholder="RM">
+                    <input type="text" class="form-control" name="fees" id="fees" value="<?php echo  $data['fees']; ?>">
                   </div>
                   
                   
@@ -302,27 +325,23 @@
   if(isset($_POST['submit']))
   {
   
+  $id = $_POST['id'];
   $treatment_name = $_POST['treatment_name'];
   $fees = $_POST['fees'];
   
-  $sql = mysqli_query($db, "INSERT INTO treatment (treatment_name, fees)
-            VALUES ('$treatment_name', '$fees')");
+   $sql = mysqli_query($db,"UPDATE treatment SET treatment_name='$treatment_name', fees='$fees' WHERE treatment_ID='$id'") or die(mysqli_error());
             
-  if($sql){
-      echo '<script language="javascript">';
-      echo 'alert("New treatment successfully added.");';
-      echo 'window.location.href="treat-list.php";';
-      echo '</script>'; 
-      }else {
-      
-      echo '<script language="javascript">';
-      echo 'alert("Fail to create treatment.");';
-      echo 'window.location.href="treat-add.php";';
-      echo '</script>'; 
-      
-      } 
-     $mysqli_close($db);
-     }
-  ?>
+   if($sql == TRUE) 
+    {
+    echo '<script language = "javascript">';
+    echo 'alert("Treatment Update Successfully");';
+    echo 'window.location.href ="treat-list.php";';
+    echo '</script>'; 
+    }
+    else {  
+    echo "Error : " .$sql. "<br>" .$db -> error; }
+      }
+      $db -> close();
+    ?>
 </body>
 </html>

@@ -115,7 +115,7 @@
 
          <!-- Add Appointment -->
          <li class="nav-item">
-            <a href="app-add.php" class="nav-link">
+            <a href="app-list.php" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -134,7 +134,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="treat-view.php" class="nav-link active">
+                <a href="#" class="nav-link active">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>View Treatment</p>
                 </a>
@@ -147,6 +147,16 @@
               </li>       
             </ul>
         </li>
+
+        <!-- Report -->
+         <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-chart-pie nav-icon"></i>
+              <p>
+                Report
+              </p>
+            </a>           
+         </li>
         </ul>
      </nav>
       <!-- /.sidebar-menu -->
@@ -161,12 +171,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Appointment</h1>
+            <h1 class="m-0">Treatment</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Appointment</a></li>
-              <li class="breadcrumb-item active">Upcoming Appointment</li>
+              <li class="breadcrumb-item"><a href="#">Treatment</a></li>
+              <li class="breadcrumb-item active">Treatment List</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -183,7 +193,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of patient's upcoming appointment</h3>
+                <h3 class="card-title">List of treatment that are provided.</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -208,10 +218,10 @@
                     <td><?php echo ucwords($data['treatment_name'])?></td>
                     <td>RM <?php echo $data['fees']?></td>             
                     <?php  echo '<td>&nbsp&nbsp 
-          <a href="treat_edit.php?id='.$data['treatment_ID'].'"> 
+          <a href="treat-edit.php?id='.$data['treatment_ID'].'"> 
            <i title="EDIT" style="font-size:24px" class="fas fa-edit"> </i></a> &nbsp&nbsp
 
-          <a href="treat_delete.php?id='.$data['treatment_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
+          <a href="treat-delete.php?id='.$data['treatment_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
           <i style="font-size:24px" title="DELETE" class="fas fa-trash"></i></a></td>';  
         echo '</tr>';?>
                   </tr>

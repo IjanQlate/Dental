@@ -128,7 +128,7 @@
 
          <!-- Add Appointment -->
          <li class="nav-item">
-            <a href="app-add.php" class="nav-link">
+            <a href="app-list.php" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -147,7 +147,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="treat-view.php" class="nav-link">
+                <a href="treat-list.php" class="nav-link">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>View Treatment</p>
                 </a>
@@ -160,6 +160,16 @@
               </li>       
             </ul>
         </li>
+
+        <!-- Report -->
+         <li class="nav-item">
+            <a href="#" class="nav-link">
+              <i class="fas fa-chart-pie nav-icon"></i>
+              <p>
+                Report
+              </p>
+            </a>           
+         </li>
         </ul>
      </nav>
       <!-- /.sidebar-menu -->
@@ -179,7 +189,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="index.php">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v1</li>
+              <li class="breadcrumb-item active">Dashboard</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
