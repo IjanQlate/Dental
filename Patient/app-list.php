@@ -1,10 +1,21 @@
- <?php 
- require "auth.php"; 
+<?php require "auth.php";
+function appStatus($status){
 
- $query=mysqli_query($db, "SELECT * FROM patient");
+  $statuses = [
+      1 => 'PENDING',
+      2 => 'CONFIRM',
+      3 => 'COMPLETE'
+  ];
  
- ?>
+  return $statuses[$status];
+}
 
+
+
+$userID=$auth['user_ID'];  
+
+  $query= mysqli_query($db, "SELECT * FROM appointment as a LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID WHERE a.user_ID = '$userID'");
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,7 +23,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="76x76" href="../src/dist/img/icon.png">
   <link rel="icon" type="image/png" href="../src/dist/img/icon.png">
-  <title> Completed Appointment</title>
+  <title> Appointment List</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -66,7 +77,7 @@
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
          
         <div class="info">
-          <a href="#" class=" d-block"> ADMIN </a>
+          <a href="#" class=" d-block"> WELCOME <?php echo "" .  strtoupper($auth['username']); ?> </a>
         </div>
       </div>
 
@@ -83,41 +94,29 @@
               </p>
             </a>
         </li>
+        <!-- Profile -->
+         <li class="nav-item">
+            <a href="profile.php" class="nav-link">
+              <i class="fas fa-user nav-icon"></i>
+              <p>
+                My Profile
+              </p>
+            </a>           
+         </li>
 
         <!-- View Appointment -->
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon far fa-calendar-alt"></i>
+         <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
+              <i class="far fa-calendar-alt nav-icon"></i>
               <p>
-                View Appointment
-                <i class="fas fa-angle-left right"></i>                
+                All Appointment
               </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="app-request.php" class="nav-link ">
-                  <i class="fas fa-caret-right nav-icon"></i>
-                  <p>Appointment Request</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="app-upcoming.php" class="nav-link">
-                  <i class="fas fa-caret-right nav-icon"></i>
-                  <p>Upcoming Appointment</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="app-complete.php" class="nav-link">
-                  <i class="fas fa-caret-right nav-icon"></i>
-                  <p>Completed Appointment</p>
-                </a>
-              </li>            
-            </ul>
+            </a>           
          </li>
 
          <!-- Add Appointment -->
-         <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+         <li class="nav-item">
+            <a href="app-add.php" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -125,39 +124,6 @@
             </a>           
          </li>
 
-          <!-- Treatment -->
-        <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-briefcase-medical"></i>
-              <p>
-                Treatment
-                <i class="fas fa-angle-left right"></i>                
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="treat-list.php" class="nav-link">
-                  <i class="fas fa-caret-right nav-icon"></i>
-                  <p>View Treatment</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="treat-add.php" class="nav-link">
-                  <i class="fas fa-caret-right nav-icon"></i>
-                  <p>Add Treatment</p>
-                </a>
-              </li>       
-            </ul>
-        </li>
-        <!-- Report -->
-         <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="fas fa-chart-pie nav-icon"></i>
-              <p>
-                Report
-              </p>
-            </a>           
-         </li>
         </ul>
      </nav>
       <!-- /.sidebar-menu -->
@@ -177,7 +143,7 @@
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Appointment</a></li>
-              <li class="breadcrumb-item active">Completed Appointment</li>
+              <li class="breadcrumb-item active">List Appointment</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -194,7 +160,7 @@
 
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">List of Registered Patient</h3>
+                <h3 class="card-title">List of Appointment</h3>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -202,32 +168,28 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Fullname</th>
-                    <th>Gender</th>
-                    <th>IC Number</th>
-                    <th>Phone Number</th>
-                    <th>Email</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <th>Treatment</th>
+                    <th>Status</th>
                     <th>Action</th>
+                    
                   </tr>                   
                   </thead>
                   
                   <tbody>
-                   <?php
+                    <?php
             $no = 0;
             while ($data = mysqli_fetch_array ($query))
             {
             ?>
                   <tr>
                     <td><?php echo ++$no;?></td>
-                    <td><?php echo ucwords($data['fullname'])?></td>
-                    <td><?php echo ucwords($data['gender'])?></td> 
-                    <td><?php echo $data['IC']?></td> 
-                    <td><?php echo $data['phoneNo']?></td>        
-                    <td><?php echo ($data['email'])?></td>
-             <?php  echo '<td>&nbsp&nbsp 
-          <a href="app-add.php?id='.$data['user_ID'].'"> 
-          <i title="ADD APPOINTMENT" style="font-size:24px" class="fa">&#xf0fe; </i></a></td>';  
-        echo '</tr>';?>
+                    <td><?php echo date("d-M-Y", strtotime($data['date']))?></td>
+                    <td><?php echo $data['time']?></td> 
+                    <td><?php echo $data['treatment_name']?></td>                    
+                    <td><?php echo appStatus($data['status'])?></td>
+                    <td></td>
                   </tr>
                   
  <?php } ?>  
@@ -236,7 +198,7 @@
                    
                  
                 </table>
-                
+               
               </div>
               <!-- /.card-body -->
             </div>
@@ -275,14 +237,7 @@
 <script src="../src/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
 <script src="../src/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
 <script src="../src/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-<script src="../src/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-<script src="../src/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-<script src="../src/plugins/jszip/jszip.min.js"></script>
-<script src="../src/plugins/pdfmake/pdfmake.min.js"></script>
-<script src="../src/plugins/pdfmake/vfs_fonts.js"></script>
-<script src="../src/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-<script src="../src/plugins/datatables-buttons/js/buttons.print.min.js"></script>
-<script src="../src/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
 <!-- AdminLTE App -->
 <script src="../src/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->

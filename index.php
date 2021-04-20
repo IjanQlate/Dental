@@ -93,7 +93,7 @@ div.right
   <div class="login">
      <center> 
     <div class="left">
-	<form action="patient_login.php" method="post"><br>
+	<form action="patient-login.php" method="post"><br>
 	<img src="img/icon.png" height="90" width="100"><br>
 	  Username: <br> <input type="text" name="username"><br>
 	  Password : <br> <input type="password" name="password"><br><br>

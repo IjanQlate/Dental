@@ -274,7 +274,7 @@ if(isset($_POST['save']))
                 <h3 class="card-title">Appointment Booking</h3>
               </div>
               <div class="card-body">
-                <H4>Patient name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
+                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
                 <div class="form-group">
                   <label>Date:</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">

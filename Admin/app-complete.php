@@ -5,7 +5,7 @@
   $statuses = [
       1 => 'NEW',
       2 => 'CONFIRM',
-      3 => 'DONE'
+      3 => 'COMPLETED'
   ];
  
   return $statuses[$status];
@@ -239,12 +239,12 @@
                     <td><?php echo date("d-M-Y", strtotime($data['date']))?></td>
                     <td><?php echo ucwords($data['time'])?></td>
                     <td><?php echo ucwords($data['treatment_name'])?></td>
-                    <td style="color: red;"><?php echo appStatus($data['status'])?></td>
+                    <td style="color: green;"><?php echo appStatus($data['status'])?></td>
                      <?php  echo '<td>&nbsp&nbsp 
-          <a href="app-upcoming(view).php?id='.$data['app_ID'].'"> 
+          <a href="app-complete(view).php?id='.$data['app_ID'].'"> 
           <i style="font-size:24px" title="VIEW MORE" class= "fas fa-eye"> </i></a> &nbsp&nbsp&nbsp
 
-          <a href="delete2.php?id='.$data['app_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
+          <a href="delete3.php?id='.$data['app_ID'].'" onclick="return confirm(\'Confirm to delete?\')"> 
           <i style="font-size:24px" title="DELETE" class="fas fa-trash"></i></a></td>';  
         echo '</tr>';?>
                   </tr>

@@ -24,6 +24,7 @@
       <b>Dental Clinic Appointment System</b>
     </div>
     <div class="card-body">
+      
       <p class="login-box-msg">Register a new account</p>
 
       <form action="register-process.php" method="post">

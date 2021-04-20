@@ -99,7 +99,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="app-upcoming.php" class="nav-link active">
+                <a href="app-upcoming.php" class="nav-link">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Upcoming Appointment</p>
                 </a>

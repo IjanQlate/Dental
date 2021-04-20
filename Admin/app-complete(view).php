@@ -1,3 +1,39 @@
+ <?php
+ require "auth.php" ;
+
+  function appStatus($status){
+
+  $statuses = [
+      1 => 'NEW',
+      2 => 'UPCOMING',
+      3 => 'COMPLETED'
+  ];
+ 
+  return $statuses[$status];
+}
+  
+ $id = $_GET['id'];
+  
+ 
+  $query = mysqli_query($db,"SELECT * FROM appointment  as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID  WHERE app_ID='$id'");
+   
+  
+  
+  if(mysqli_num_rows($query) == 0){
+    
+   
+    echo '<script>window.history.back()</script>';
+    
+  }else{
+  
+   
+    $data = mysqli_fetch_assoc($query);
+  
+  }
+  ?>
+
+
+ ?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -6,30 +42,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="76x76" href="../src/dist/img/icon.png">
   <link rel="icon" type="image/png" href="../src/dist/img/icon.png">
-  <title>Dental | Treatment</title>
+  <title> Add Appointment</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
   <link rel="stylesheet" href="../src/plugins/fontawesome-free/css/all.min.css">
-  <!-- Ionicons -->
-  <link rel="stylesheet" href="../srchttps://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="../src/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="../src/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="../src/plugins/jqvmap/jqvmap.min.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../src/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../src/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../src/dist/css/adminlte.min.css">
+  <!-- Ionicons -->
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../src/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-  <!-- Daterange picker -->
-  <link rel="stylesheet" href="../srcplugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="../src/plugins/summernote/summernote-bs4.min.css">
-    <!-- fullCalendar -->
-  <link rel="stylesheet" href="../src/plugins/fullcalendar/main.css">
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -97,8 +125,8 @@
         </li>
 
         <!-- View Appointment -->
-        <li class="nav-item">
-            <a href="#" class="nav-link">
+        <li class="nav-item menu-open">
+            <a href="#" class="nav-link active">
               <i class="nav-icon far fa-calendar-alt"></i>
               <p>
                 View Appointment
@@ -119,7 +147,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="app-complete.php" class="nav-link">
+                <a href="app-complete.php" class="nav-link active">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Completed Appointment</p>
                 </a>
@@ -129,7 +157,7 @@
 
          <!-- Add Appointment -->
          <li class="nav-item">
-            <a href="app-list.php" class="nav-link">
+            <a href="app-add.php" class="nav-link">
               <i class="fas fa-plus-square nav-icon"></i>
               <p>
                 Add Appointment
@@ -138,8 +166,8 @@
          </li>
 
           <!-- Treatment -->
-        <li class="nav-item menu-open">
-            <a href="#" class="nav-link active">
+        <li class="nav-item">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase-medical"></i>
               <p>
                 Treatment
@@ -154,7 +182,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="#" class="nav-link active">
+                <a href="treat-add.php" class="nav-link">
                   <i class="fas fa-caret-right nav-icon"></i>
                   <p>Add Treatment</p>
                 </a>
@@ -164,13 +192,14 @@
 
         <!-- Report -->
          <li class="nav-item">
-            <a href="report.php" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="fas fa-chart-pie nav-icon"></i>
               <p>
                 Report
               </p>
             </a>           
          </li>
+
         </ul>
      </nav>
       <!-- /.sidebar-menu -->
@@ -185,12 +214,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Treatment</h1>
+            <h1 class="m-0">Appointment</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Treatment</a></li>
-              <li class="breadcrumb-item active">Add Treatment</li>
+              <li class="breadcrumb-item"><a href="#">Appointment</a></li>
+              <li class="breadcrumb-item active">Completed Appointment</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -202,34 +231,53 @@
     <section class="content">
       <div class="container-fluid">
   
-        <div class="row">
+         <div class="row">
           <div class="col-md-12">
-          <div class="card card-primary">
+          <form action="#" method="post"><input type="hidden" name="id" value="<?php echo $id; ?>">
+            <div class="card card-info">
               <div class="card-header">
-                <h3 class="card-title">Add New Treatment</h3>
+                <h3 class="card-title">View the completed patient appointment</h3>
               </div>
-              <!-- /.card-header -->
-              <!-- form start -->
-              <form action="treat-add.php" method="post">
-                <div class="card-body">
+              <div class="card-body">
+                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
+                 <div class="form-group">
+                    <label for="Date">Appointment Date :</label>
+                    <input type="text" class="form-control" name="date" id="date" value="<?php echo date("d-M-Y", strtotime(($data['date']))) ; ?>" readonly>
+                </div>
+
+
+                <!-- Time -->
+               <div class="form-group">
+                    <label for="time">Appointment session</label>
+                    <input type="text" class="form-control" name="time" id="time" value="<?php echo ucwords($data['time']); ?>" readonly>
+                </div>
+                <!-- /.form group -->
+
+                <!-- Time -->
+                 
                   <div class="form-group">
                     <label for="treatment">Treatment</label>
-                    <input type="text" class="form-control" name="treatment_name" id="treatment_name" placeholder="Enter treatment">
+                    <input type="text" class="form-control" name="treatment" id="treatment" value="<?php echo  $data['treatment_name']; ?>" readonly>
                   </div>
-                  <div class="form-group">
-                    <label for="fees">Fees (RM)</label>
-                    <input type="text" class="form-control" name="fees" id="fees" placeholder="RM">
-                  </div>
-                  
-                  
-                </div>
-                <!-- /.card-body -->
+                  <!-- /.input group -->
+                
+                <!-- /.form group -->
 
-                <div class="card-footer">
-                  <input type="submit" name="submit" class="btn btn-primary" value ="Submit">
-                </div>
-              </form>
-          </div>
+                 <!-- Status -->
+                 <div class="form-group">
+                    <label for="status">Status</label>
+                    <input type="text" class="form-control" name="status" id="time" value="<?php echo appStatus($data['status'])?>" readonly>
+                  </div>
+                <!-- /.form group -->
+
+
+                <br>   
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+            
+          </form>
 
           </div>
           
@@ -256,73 +304,33 @@
 </div>
 <!-- ./wrapper -->
 
+
 <!-- jQuery -->
 <script src="../src/plugins/jquery/jquery.min.js"></script>
-<!-- jQuery UI 1.11.4 -->
-<script src="../src/plugins/jquery-ui/jquery-ui.min.js"></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
-<script>
-  $.widget.bridge('uibutton', $.ui.button)
-</script>
 <!-- Bootstrap 4 -->
 <script src="../src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../src/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../src/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../src/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../src/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../src/plugins/jquery-knob/jquery.knob.min.js"></script>
-<!-- daterangepicker -->
-<script src="../src/plugins/moment/moment.min.js"></script>
+<!-- Select2 -->
+<script src="../src/plugins/select2/js/select2.full.min.js"></script>
+ 
+<!-- InputMask -->
+<script src="../src/plugins/moment/moment.min.js"></script> 
+<!-- date-range-picker -->
 <script src="../src/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- bootstrap color picker -->
+<script src="../src/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js"></script>
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="../src/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../src/plugins/summernote/summernote-bs4.min.js"></script>
-<!-- overlayScrollbars -->
-<script src="../src/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- Bootstrap Switch -->
+<script src="../src/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
+<!-- BS-Stepper -->
+<script src="../src/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<!-- dropzonejs -->
+<script src="../src/plugins/dropzone/min/dropzone.min.js"></script>
 <!-- AdminLTE App -->
-<script src="../src/dist/js/adminlte.js"></script>
+<script src="../src/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="../src/dist/js/demo.js"></script>
-<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
-<script src="../src/dist/js/pages/dashboard.js"></script>
-<!-- fullCalendar 2.2.5 -->
-<script src="../src/plugins/moment/moment.min.js"></script>
-<script src="../src/plugins/fullcalendar/main.js"></script>
+ 
 
-  <!-- InsertIntoDatabase -->
-  <?php
-  
-  require "../config.php";
-  
-  if(isset($_POST['submit']))
-  {
-  
-  $treatment_name = $_POST['treatment_name'];
-  $fees = $_POST['fees'];
-  
-  $sql = mysqli_query($db, "INSERT INTO treatment (treatment_name, fees)
-            VALUES ('$treatment_name', '$fees')");
-            
-  if($sql){
-      echo '<script language="javascript">';
-      echo 'alert("New treatment successfully added.");';
-      echo 'window.location.href="treat-list.php";';
-      echo '</script>'; 
-      }else {
-      
-      echo '<script language="javascript">';
-      echo 'alert("Fail to create treatment.");';
-      echo 'window.location.href="treat-add.php";';
-      echo '</script>'; 
-      
-      } 
-     $mysqli_close($db);
-     }
-  ?>
 </body>
 </html>
