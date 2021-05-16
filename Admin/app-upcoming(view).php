@@ -227,7 +227,9 @@
                 <h3 class="card-title">Modify status for patient appointment</h3>
               </div>
               <div class="card-body">
-                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
+               <b>Patient ID&nbsp&nbsp : </b><?php echo ucwords ( $data['user_ID']); ?><br> 
+                 <b>Patient&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp : </b><?php echo ucwords ( $data['fullname']); ?><br> 
+                 <b>IC Number :</b> <?php echo ( $data['IC']); ?><br><br>
                 <div class="form-group">
                     <label for="Date">Appointment Date :</label>
                     <input type="text" class="form-control" name="date" id="date" value="<?php echo date("d-M-Y", strtotime(($data['date']))) ; ?>" readonly>
@@ -247,15 +249,11 @@
 
                  <!-- Status -->
                 <div class="form-group">
-                  <label> Appointment request:</label>
+                  <label> Appointment status:</label>
 
-                  <select name="status" id="status" class="form-control select2" style="width: 100%;">
-                    <option value="">--status--</option> 
-                    <option value="2" <?php if($data['status'] == '2'){ echo 'selected'; } ?>>APPROVED</option>  <!-- jika data di database sama dengan value maka akan terselect/terpilih -->
-                    <option value="3" <?php if($data['status'] == '3'){ echo 'selected'; } ?>>COMPLETED</option>       
-                                   
-                  </select>
-                  <!-- /.input group -->
+                  <br>
+                  <input type="checkbox" id="status" name="status" value="3"> &nbsp
+                  <label for="complete">Completed</label><br>
                 </div>
                 <!-- /.form group -->
 

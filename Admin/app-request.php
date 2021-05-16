@@ -11,6 +11,17 @@
   return $statuses[$status];
 }
 
+ function PayDeposit($deposit){
+
+  $depo = [
+      1 => 'Pending',
+      2 => 'Done',
+      
+  ];
+ 
+  return $depo[$deposit];
+}
+
 
    $query = "SELECT * FROM appointment as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID  WHERE status = 1 ORDER BY date ASC ";
 
@@ -216,12 +227,12 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Fullname</th>
-                    <th>IC Number</th>
+                    <th>Fullname</th>                  
                     <th>Date</th>
                     <th>Time</th>
                     <th>Treatment</th>
                     <th>Status</th>
+                    <th>Deposit</th>
                     <th>Action</th>
                   </tr>                   
                   </thead>
@@ -235,11 +246,11 @@
                   <tr>
                     <td><?php echo ++$no;?></td>
                     <td><?php echo ucwords($data['fullname'])?></td>
-                    <td><?php echo $data['IC']?></td>
                     <td><?php echo date("d-M-Y", strtotime($data['date']))?></td>
                     <td><?php echo ucwords($data['time'])?></td>
                     <td><?php echo ucwords($data['treatment_name'])?></td>
                     <td style="color: red;"><?php echo appStatus($data['status'])?></td>
+                    <td><?php echo PayDeposit($data['deposit'])?></td>
                      <?php  echo '<td>&nbsp&nbsp 
           <a href="app-request(view).php?id='.$data['app_ID'].'"> 
           <i style="font-size:24px" title="VIEW MORE" class= "fas fa-eye"> </i></a> &nbsp&nbsp&nbsp

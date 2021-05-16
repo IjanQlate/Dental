@@ -113,24 +113,21 @@ div.right
 	<br>break (12:15 P.M - 2.45 P.M)</i><br>
 	<i class="fa fa-clock-o">&nbsp; WEEKENDS & PUBLIC HOLIDAY<br>
 	(CLOSED)</i><br>
-	<i class="fa fa-map-marker">&nbsp;
+<!--	<i class="fa fa-map-marker">&nbsp;
 		DENTAL CLINIC,<br>
 No. 119, JALAN MERDEKA,<br>
 		 TAMAN MELAKA RAYA,,<br>
 		75000 MALACCA TOWN,<br>
-		MELAKA, MALAYSIA.</i><br>
+		MELAKA, MALAYSIA.</i><br> -->
 	<i class="fa fa-phone">&nbsp;PHONE : 06-553 4439</i><br> 
-	<i class="fa fa-print">&nbsp;FAX : 06-555 2077</i><br> 	
-	<a href="information.php"><img src="img/select5.png" height="90" width="90"></a> &nbsp;
+	<i class="fa fa-print">&nbsp;FAX : 06-555 2077</i><br> 	<br>
+	<a href="information.php"><img src="img/select5.png" height="90" width="90"></a> &nbsp;<br>
 	<button class="btn-login" style=" height:50px ; width:220 ;cursor:pointer;" onclick="location.href = 'admin-login.php'" >ADMIN/STAFF LOGIN</button>
 	</center>
 	</div>
    </div> 
    
-   <div class="footer">
-        <center><p><b>Copyright &copy; NURUL AISHAH BINTI ROSLI. B031910219.</b></p></center>
-        </div>
-</div> 
+    
  
 </body>
 </html>

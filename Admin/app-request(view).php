@@ -19,6 +19,17 @@
     $data = mysqli_fetch_assoc($query);
   
   }
+
+  function PayDeposit($deposit){
+
+  $depo = [
+      1 => 'Pending',
+      2 => 'Done',
+      
+  ];
+ 
+  return $depo[$deposit];
+}
   ?>
 
 
@@ -29,7 +40,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" sizes="76x76" href="../src/dist/img/icon.png">
   <link rel="icon" type="image/png" href="../src/dist/img/icon.png">
-  <title> Add Appointment</title>
+  <title>Appointment Request</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -226,7 +237,9 @@
                 <h3 class="card-title">Modify patient appointment</h3>
               </div>
               <div class="card-body">
-                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
+                 <b>Patient ID&nbsp&nbsp : </b><?php echo ucwords ( $data['user_ID']); ?><br> 
+                 <b>Patient&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp : </b><?php echo ucwords ( $data['fullname']); ?><br> 
+                 <b>IC Number :</b> <?php echo ( $data['IC']); ?><br><br>
                 <div class="form-group">
                  <label for="Date">Appointment Date</label>
                   
@@ -261,34 +274,35 @@
                 <div class="form-group">
                   <label> Required Treatment:</label>
 
-                  <select name="treatment_name" id="treatment" class="form-control select2" style="width: 100%;">
- <?php
-                      $sql = mysqli_query($db, "SELECT * From treatment");
-                      $row = mysqli_num_rows($sql);
-                    while ($row = mysqli_fetch_array($sql)){ ?>
-                    <option value='<?= $row['treatment_ID'] ?>' <?= ($data['treatment_ID'] == $row['treatment_ID'])? 'selected' : '' ?>><?= $row['treatment_name'] ?></option>" ;
-              <?php } ?>               
-                  </select>
+                 <input type="text" class="form-control" name="treatment" id="treatment" value="<?php echo  ucwords ($data['treatment_name']); ?>" readonly>
                   <!-- /.input group -->
                 </div>
                 <!-- /.form group -->
+
+                <div class="form-group">
+                  <label> Deposit Payment:</label>
+
+                  
+                   <input type="text" class="form-control" name="deposit" id="deposit" value="<?php echo   PayDeposit($data['deposit']); ?>" readonly>
+ 
+                </div>
 
                  <!-- Status -->
                 <div class="form-group">
                   <label> Appointment request:</label>
 
-                  <select name="status" id="status" class="form-control select2" style="width: 100%;">
-                    <option value="">--status--</option> 
-                    <option value="1" <?php if($data['status'] == '1'){ echo 'selected'; } ?>>NEW</option>  <!-- jika data di database sama dengan value maka akan terselect/terpilih -->
-                    <option value="2" <?php if($data['status'] == '2'){ echo 'selected'; } ?>>APPROVED</option>       
-                                   
-                  </select>
-                  <!-- /.input group -->
+                  
+                  <br>
+                  <input type="checkbox" id="status" name="status" value="2"> &nbsp
+                  <label for="approved">Approved</label><br>
+ 
                 </div>
                 <!-- /.form group -->
 
+                
 
-                <br><input type="submit" class="btn badge-info save" name="save" value="SUBMIT">  
+                <br><input type="submit" class="btn badge-info save" name="save" value="SUBMIT" onclick="return confirm('Are you sure?');">  
+               
               </div>
               <!-- /.card-body -->
             </div>
@@ -382,13 +396,12 @@ if(isset($_POST['save'])){
 
   $id = $_POST['id'];
   $date = date('Y-m-d',strtotime($_POST['date']));
-  $time = $_POST['time'];
-  $treatment_name= $_POST['treatment_name'];
+  $time = $_POST['time']; 
   $status= $_POST['status'];
 
   
 
-  $sql = mysqli_query($db,"UPDATE appointment SET date = '$date', time = '$time', treatment_ID='$treatment_name', status='$status'  WHERE app_ID='$id'") or die(mysqli_error());
+  $sql = mysqli_query($db,"UPDATE appointment SET date = '$date', time = '$time', status='$status'  WHERE app_ID='$id'") or die(mysqli_error());
   
 
   if($sql == TRUE) 

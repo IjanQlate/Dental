@@ -239,39 +239,13 @@
                 <h3 class="card-title">View the completed patient appointment</h3>
               </div>
               <div class="card-body">
-                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
-                 <div class="form-group">
-                    <label for="Date">Appointment Date :</label>
-                    <input type="text" class="form-control" name="date" id="date" value="<?php echo date("d-M-Y", strtotime(($data['date']))) ; ?>" readonly>
-                </div>
-
-
-                <!-- Time -->
-               <div class="form-group">
-                    <label for="time">Appointment session</label>
-                    <input type="text" class="form-control" name="time" id="time" value="<?php echo ucwords($data['time']); ?>" readonly>
-                </div>
-                <!-- /.form group -->
-
-                <!-- Time -->
-                 
-                  <div class="form-group">
-                    <label for="treatment">Treatment</label>
-                    <input type="text" class="form-control" name="treatment" id="treatment" value="<?php echo  $data['treatment_name']; ?>" readonly>
-                  </div>
-                  <!-- /.input group -->
-                
-                <!-- /.form group -->
-
-                 <!-- Status -->
-                 <div class="form-group">
-                    <label for="status">Status</label>
-                    <input type="text" class="form-control" name="status" id="time" value="<?php echo appStatus($data['status'])?>" readonly>
-                  </div>
-                <!-- /.form group -->
-
-
-                <br>   
+               
+               <h6><b> Patient ID  # <?php echo ucwords ( $data['user_ID']); ?> </h6><br></b>
+                <h6>Patient &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  :&nbsp <?php echo ucwords ( $data['fullname']); ?></h6> 
+                <h6>IC Number &nbsp&nbsp&nbsp&nbsp :&nbsp <?php echo ( $data['IC']); ?> </h6>
+                <h6>App date &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  :&nbsp </b><?php echo date("d-M-Y", strtotime(($data['date']))) ; ?></h6> 
+                <h6>App session &nbsp&nbsp :&nbsp </b><?php echo ucwords ( $data['time']); ?></h6> 
+                <h6>Treatment &nbsp&nbsp&nbsp&nbsp&nbsp  :&nbsp</b> <?php echo ucwords( $data['treatment_name']); ?></h6> 
               </div>
               <!-- /.card-body -->
             </div>

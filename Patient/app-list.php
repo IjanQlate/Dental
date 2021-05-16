@@ -2,12 +2,23 @@
 function appStatus($status){
 
   $statuses = [
-      1 => 'PENDING',
-      2 => 'CONFIRM',
-      3 => 'COMPLETE'
+      1 => 'Pending',
+      2 => 'Approves',
+      3 => 'Complete'
   ];
  
   return $statuses[$status];
+}
+
+  function PayDeposit($deposit){
+
+  $depo = [
+      1 => 'Pending',
+      2 => 'Done',
+      
+  ];
+ 
+  return $depo[$deposit];
 }
 
 
@@ -172,7 +183,8 @@ $userID=$auth['user_ID'];
                     <th>Time</th>
                     <th>Treatment</th>
                     <th>Status</th>
-                    <th>Action</th>
+                    <th>Deposit Payment</th>
+                    <!--<th>Action</th>-->
                     
                   </tr>                   
                   </thead>
@@ -186,10 +198,11 @@ $userID=$auth['user_ID'];
                   <tr>
                     <td><?php echo ++$no;?></td>
                     <td><?php echo date("d-M-Y", strtotime($data['date']))?></td>
-                    <td><?php echo $data['time']?></td> 
-                    <td><?php echo $data['treatment_name']?></td>                    
+                    <td><?php echo ucwords($data['time'])?></td> 
+                    <td><?php echo ucwords($data['treatment_name'])?></td>                    
                     <td><?php echo appStatus($data['status'])?></td>
-                    <td></td>
+                    <td><?php echo PayDeposit($data['deposit'])?></td>
+                    <!--<td></td>-->
                   </tr>
                   
  <?php } ?>  

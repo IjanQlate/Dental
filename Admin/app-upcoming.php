@@ -12,6 +12,8 @@
 }
 
 
+
+
    $query = "SELECT * FROM appointment as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID  WHERE status = 2 ORDER BY date ASC ";
 
     $result = mysqli_query($db,$query);
