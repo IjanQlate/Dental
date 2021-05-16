@@ -7,7 +7,8 @@ if(isset($_POST["login"]))
  {  
       if(empty($_POST["username"]) || empty($_POST["password"]))  
       {  
-           echo '<script>alert("Both Fields are required")</script>';  
+           echo '<script>alert("Both Fields are required"); window.location.href="index.php"; </script>';  
+
       }  
       else  
       {  

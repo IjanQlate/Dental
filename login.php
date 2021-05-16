@@ -27,7 +27,7 @@
     <div class="card-body">
       <p class="login-box-msg">Sign in to start your session</p><br>
 
-      <form action="admin-login.php" method="post">
+      <form action="login.php" method="post">
         <div class="input-group mb-3">
           <input type="username" class="form-control" name="username" id="username" placeholder="username">
           <div class="input-group-append">
@@ -98,7 +98,7 @@
       $_SESSION['username']=$username;
       $_SESSION['password']=$password;
        
-      header('Location:staff/staffhome.php');
+      header('Location:staff/index.php');
       
     }
     
