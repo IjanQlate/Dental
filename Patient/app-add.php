@@ -200,25 +200,10 @@
                                     <?php } ?>       
                   </select>
                   <!-- /.input group -->
-                </div>
+                </div> <br>
                 <!-- /.form group -->
 
-
-                <!-- phone mask  
-                <div class="form-group">
-                  <label>US phone mask:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
-                  </div>
-                  /.input group  
-                </div>
-                /.form group -->  
-
-                <br><input type="submit" class=" btn badge-primary save" name="submit" value="SUBMIT">  
+               <input type="submit" class=" btn badge-primary save" name="submit" value="SUBMIT">  
               </div>
               <!-- /.card-body -->
             </div>

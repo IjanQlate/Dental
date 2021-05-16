@@ -222,12 +222,13 @@
          <div class="row">
           <div class="col-md-12">
           <form action="#" method="post"><input type="hidden" name="id" value="<?php echo $id; ?>">
+            <input type="hidden" name="status"  value="<?php echo ($data['status']); ?> ">
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Modify status for patient appointment</h3>
               </div>
               <div class="card-body">
-               <b>Patient ID&nbsp&nbsp : </b><?php echo ucwords ( $data['user_ID']); ?><br> 
+               <b>Patient ID # </b><?php echo ucwords ( $data['user_ID']); ?><br> 
                  <b>Patient&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp : </b><?php echo ucwords ( $data['fullname']); ?><br> 
                  <b>IC Number :</b> <?php echo ( $data['IC']); ?><br><br>
                 <div class="form-group">
@@ -254,11 +255,12 @@
                   <br>
                   <input type="checkbox" id="status" name="status" value="3"> &nbsp
                   <label for="complete">Completed</label><br>
-                </div>
+                </div><br>
                 <!-- /.form group -->
 
 
-                <br><input type="submit" class="btn badge-info save" name="save" value="SUBMIT">  
+                <input type="button" class="btn badge-danger" name="cancel" value="Cancel" onclick="goBack();">  
+                <input type="submit" class="btn badge-info float-right" name="save" value="Submit" onclick="return confirm('Are you sure?');">  
               </div>
               <!-- /.card-body -->
             </div>
@@ -342,6 +344,10 @@
     })
 
   })
+
+   function goBack() {
+  window.history.back()
+}
    
 </script>
 

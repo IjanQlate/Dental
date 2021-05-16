@@ -246,6 +246,7 @@
                 <h6>App date &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp  :&nbsp </b><?php echo date("d-M-Y", strtotime(($data['date']))) ; ?></h6> 
                 <h6>App session &nbsp&nbsp :&nbsp </b><?php echo ucwords ( $data['time']); ?></h6> 
                 <h6>Treatment &nbsp&nbsp&nbsp&nbsp&nbsp  :&nbsp</b> <?php echo ucwords( $data['treatment_name']); ?></h6> 
+
               </div>
               <!-- /.card-body -->
             </div>
@@ -253,6 +254,7 @@
             
           </form>
 
+          <input type="button" class="btn badge-danger" name="back" value="Back" onclick="goBack();">  
           </div>
           
           <!-- /.col (right) -->
@@ -305,6 +307,13 @@
 <!-- AdminLTE for demo purposes -->
 <script src="../src/dist/js/demo.js"></script>
  
+ <script>
+   
+   function goBack() {
+  window.history.back()
+}
+
+ </script>
 
 </body>
 </html>

@@ -16,20 +16,16 @@
   <link rel="stylesheet" href="../srchttps://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
   <!-- Tempusdominus Bootstrap 4 -->
   <link rel="stylesheet" href="../src/plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-  <!-- iCheck -->
-  <link rel="stylesheet" href="../src/plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-  <!-- JQVMap -->
-  <link rel="stylesheet" href="../src/plugins/jqvmap/jqvmap.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../src/dist/css/adminlte.min.css">
   <!-- overlayScrollbars -->
   <link rel="stylesheet" href="../src/plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Daterange picker -->
   <link rel="stylesheet" href="../srcplugins/daterangepicker/daterangepicker.css">
-  <!-- summernote -->
-  <link rel="stylesheet" href="../src/plugins/summernote/summernote-bs4.min.css">
-    <!-- fullCalendar -->
-  <link rel="stylesheet" href="../src/plugins/fullcalendar/main.css">
+  <!-- Select2 -->
+  <link rel="stylesheet" href="../src/plugins/select2/css/select2.min.css">
+  <link rel="stylesheet" href="../src/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -170,27 +166,26 @@
 
                   <div class="form-group">
                     <label for="Fullname">Fullname</label>
-                    <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo  ucwords ($auth['fullname']); ?>" readonly>
+                    <input type="text" class="form-control" name="fullname" id="fullname" value="<?php echo  ucwords ($auth['fullname']); ?>">
                   </div>
-
-                  <div class="form-group">
-                    <label for="IC">IC Number</label>
-                    <input type="text" class="form-control" name="IC" id="IC" value="<?php echo  ucwords ($auth['IC']); ?>" readonly>
-                  </div>                    
 
                   <div class="form-group">
                     <div class="row">
                       <div class="col-6">
-                        <label for="DOB">Date of Birth</label>
-                        <input type="text" class="form-control" name="DOB" id="DOB" value="<?php echo date("d-M-Y", strtotime(($auth['DOB']))) ; ?>" readonly>
-                      </div> 
-                    
-                      <div class="col-6">
-                        <label for="Gender">Gender</label>
-                        <input type="text" class="form-control" name="gender" id="gender" value="<?php echo  ucwords ($auth['gender']); ?>" readonly>
-                      </div>
-                    </div> 
-                  </div>
+                        <label for="IC">IC Number</label>
+                        <input type="text" class="form-control" name="IC" id="IC" value="<?php echo  ucwords ($auth['IC']); ?>">
+                      </div>                    
+
+                    <div class="col-6">
+                      <label>Date of Birth:</label>
+                        <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                          <input type="text" name="DOB" value="<?php echo date("d-M-Y", strtotime(($auth['DOB']))) ; ?>" class="form-control datetimepicker-input" data-target="#reservationdate"/>                       
+                        </div>
+                    </div>
+                  </div> <br>
 
                   <div class="form-group">
                     <div class="row">
@@ -211,12 +206,12 @@
                     <input type="text" class="form-control" name="address" id="address" value="<?php echo  ucwords ($auth['address']); ?>" required>
                   </div> 
                   
-                </div>
+                </div><br>
                 <!-- /.card-body -->
 
-                <div class="card-footer">
+             
                   <input type="submit" name="save" class="btn btn-primary" value ="Save">
-                </div>
+                 
               </form>
           </div>
 
@@ -256,22 +251,13 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="../src/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<!-- ChartJS -->
-<script src="../src/plugins/chart.js/Chart.min.js"></script>
-<!-- Sparkline -->
-<script src="../src/plugins/sparklines/sparkline.js"></script>
-<!-- JQVMap -->
-<script src="../src/plugins/jqvmap/jquery.vmap.min.js"></script>
-<script src="../src/plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-<!-- jQuery Knob Chart -->
-<script src="../src/plugins/jquery-knob/jquery.knob.min.js"></script>
 <!-- daterangepicker -->
 <script src="../src/plugins/moment/moment.min.js"></script>
 <script src="../src/plugins/daterangepicker/daterangepicker.js"></script>
+<!-- Select2 -->
+<script src="../src/plugins/select2/js/select2.full.min.js"></script> 
 <!-- Tempusdominus Bootstrap 4 -->
 <script src="../src/plugins/tempusdominus-bootstrap-4/js/tempusdominus-bootstrap-4.min.js"></script>
-<!-- Summernote -->
-<script src="../src/plugins/summernote/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="../src/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
 <!-- AdminLTE App -->
@@ -280,11 +266,33 @@
 <script src="../src/dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../src/dist/js/pages/dashboard.js"></script>
-<!-- fullCalendar 2.2.5 -->
-<script src="../src/plugins/moment/moment.min.js"></script>
-<script src="../src/plugins/fullcalendar/main.js"></script>
+
+<!-- Page specific script -->
+<script>
+  $(function () {
+    //Initialize Select2 Elements
+    $('.select2').select2()
+
+    //Initialize Select2 Elements
+    $('.select2bs4').select2({
+      theme: 'bootstrap4'
+    })
 
 
+    //Date picker
+    $('#reservationdate').datetimepicker({
+        format: 'D MMMM yyyy',
+    
+    });   
+
+    
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    })
+
+  })
+   
+</script>
 
 </body>
 </html>

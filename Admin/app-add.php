@@ -23,8 +23,10 @@ if(isset($_POST['save']))
   $date = date('Y-m-d',strtotime($_POST['date']));
   $time=$_POST['time'];
   $treatment_name=$_POST['treatment_name'];
+  $status=$_POST['status'];
+  $deposit=$_POST['deposit'];
 
-  $q = "INSERT INTO appointment (date,time,treatment_ID,user_ID) VALUES ('$date','$time', '$treatment_name', '$patient[user_ID]')";
+  $q = "INSERT INTO appointment (date,time,treatment_ID,user_ID,status,deposit) VALUES ('$date','$time', '$treatment_name', '$patient[user_ID]', '$status','$deposit')";
 
   if(mysqli_query($db, $q)){
     
@@ -268,14 +270,16 @@ if(isset($_POST['save']))
   
          <div class="row">
           <div class="col-md-12">
-          <form action="#" method="post">
+          <form action="#" method="post"><input type="hidden" name="status" value="1">
             <div class="card card-info">
               <div class="card-header">
                 <h3 class="card-title">Appointment Booking</h3>
               </div>
               <div class="card-body">
-                <H4>Patient Name : <?php echo ucwords ( $data['fullname']); ?></H4><br>
-                <div class="form-group">
+                <h6> Patient ID  # <b><?php echo ( $data['user_ID']); ?></b> </h6>
+                <h6> Patient Name : <?php echo ucwords ( $data['fullname']); ?> </h6>
+                <h6> IC Number&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp : <?php echo ( $data['IC']); ?> </h6><p>
+                <div class="form-group"></p>
                   <label>Date:</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
@@ -313,29 +317,24 @@ if(isset($_POST['save']))
                           echo "<option value='". $row['treatment_ID'] ."'>" .$row['treatment_name'] ."</option>" ;
                          }
                     ?>                
-                  </select>
+                  </select><br>
                   <!-- /.input group -->
+
+                  <div class="form-group">
+                  <label> Deposit Payment:</label>
+
+                  <br>
+                  <input type="checkbox" id="deposit" name="deposit" value="2"> &nbsp
+                  <label for="deposit">Done</label><br>
                 </div>
-                <!-- /.form group -->
-
-
-                <!-- phone mask  
-                <div class="form-group">
-                  <label>US phone mask:</label>
-
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text"><i class="fas fa-phone"></i></span>
-                    </div>
-                    <input type="text" class="form-control" data-inputmask='"mask": "(999) 999-9999"' data-mask>
-                  </div>
-                  /.input group  
                 </div>
-                /.form group -->  
+               
 
-                <input type="submit" class=" float-right btn badge-info save" name="save" value="SUBMIT">  
+                 <input type="button" class="btn badge-danger" name="Cancel" value="Cancel" onclick="goBack();">  
+                <input type="submit" class="btn badge-info float-right" name="save" value="Submit" onclick="return confirm('Are you sure?');"> 
               </div>
               <!-- /.card-body -->
+
             </div>
             <!-- /.card -->
             
@@ -418,6 +417,10 @@ if(isset($_POST['save']))
 
   })
    
+   function goBack() {
+  window.history.back()
+}
+
 </script>
 
 </body>
