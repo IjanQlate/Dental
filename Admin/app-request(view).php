@@ -20,16 +20,6 @@
   
   }
 
-  function PayDeposit($deposit){
-
-  $depo = [
-      1 => 'Pending',
-      2 => 'Done',
-      
-  ];
- 
-  return $depo[$deposit];
-}
   ?>
 
 
@@ -261,6 +251,16 @@
                   <label> Appointment session:</label>
 
                   <select name="time" id="time" placeholder = "Choose your preffered session" class="form-control select2" style="width: 100%;">
+
+
+                    <!--<option value="8.00am">8.00am-9.00am</option>
+                    <option value="9.00am">9.00am-10.00am</option>
+                    <option value="10.00am">10.00am-11.00am</option>
+                    <option value="11.00pm">11.00am-12.00pm</option>
+                    <option value="11.00pm">12.00pm-1.00pm</option>
+                    <option value="2.00pm">2.00pm-3.00pm</option>
+                    <option value="3.00pm">3.00pm-4.00pm</option>
+                    <option value="4.00pm">4.00pm-5.00pm</option>-->
                      
                     <option value="morning"<?php if($data['time'] == 'Morning'){ echo 'selected'; } ?>>Morning
                     </option>  
@@ -397,10 +397,11 @@
 </script>
 
 <?php
-require "../config.php";
+ 
 if(isset($_POST['save'])){
   
 
+  
   $id = $_POST['id'];
   $date = date('Y-m-d',strtotime($_POST['date']));
   $time = $_POST['time']; 

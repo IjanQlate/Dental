@@ -1,4 +1,4 @@
- <?php
+   <?php
  require "auth.php"; 
   function appStatus($status){
 
@@ -11,17 +11,7 @@
   return $statuses[$status];
 }
 
- function PayDeposit($deposit){
-
-  $depo = [
-      1 => 'Pending',
-      2 => 'Done',
-      
-  ];
  
-  return $depo[$deposit];
-}
-
 
    $query = "SELECT * FROM appointment as a LEFT JOIN patient as p ON a.user_ID=p.user_ID LEFT JOIN treatment as t ON t.treatment_ID = a.treatment_ID  WHERE status = 1 ORDER BY date ASC ";
 

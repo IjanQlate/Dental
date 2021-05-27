@@ -4,6 +4,53 @@
 
 
  ?>
+
+ <?php          
+
+    if(isset($_POST['submit'])) 
+    {
+
+      $date = date('Y-m-d',strtotime($_POST['date']));
+      $time=$_POST['time'];
+      $treatment_name=$_POST['treatment_name'];
+      $userID= $auth["user_ID"];
+
+      $query = $db->query("UPDATE appointment SET deposit=2 WHERE receipt_number='$billcode'");
+       
+
+
+      $billDescription = "Deposit Payment";
+      $billAmount = getDepositAmount()*100;
+      $billReturnUrl = "http://localhost:8080/dental/patient/app-validate.php";
+      $billCallbackUrl = "http://localhost:8080/dental/patient/app-validate.php";
+      $billTo = $auth['fullname'];
+      $billEmail = $auth['email'];
+      $billPhone = $auth['phoneNo'];
+      $depo = getDepositAmount();
+
+
+      $code = createBill($GLOBALS['toyyib_deposit_code'], $treatment_name, $billDescription, $billAmount, $billReturnUrl, $billCallbackUrl, $billTo, $billEmail,$billPhone);
+
+
+      $receipt = $GLOBALS['toyyib_url'].$code;
+
+      $sql = "INSERT INTO appointment (date,time,treatment_ID,user_ID, receipt_number, receipt_url, deposit_amount) VALUES ('$date','$time', '$treatment_name', '$userID', '$code', '$receipt', $depo)";
+
+      if(mysqli_query($db, $sql)=== TRUE){
+
+        header("Location:".$receipt);exit();
+
+      } else
+      {
+
+         echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+      }    
+
+      } 
+
+mysqli_close($db);
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -179,12 +226,21 @@
 
                 <!-- Time -->
                 <div class="form-group">
-                  <label> Appointment session:</label>
+                  <label> Appointment time slot:</label>
 
                   <select name="time" id="time" placeholder = "Choose your preffered session" class="form-control select2" style="width: 100%;">
-                    <option>---Choose the prefered session--</option>
-                    <option value="Morning">Morning</option>
-                    <option value="Evening">Evening</option>                    
+                    
+                    <option value="8.00am">8.00am-9.00am</option>
+                    <option value="9.00am">9.00am-10.00am</option>
+                    <option value="10.00am">10.00am-11.00am</option>
+                    <option value="11.00pm">11.00am-12.00pm</option>
+                    <option value="11.00pm">12.00pm-1.00pm</option>
+                    <option value="2.00pm">2.00pm-3.00pm</option>
+                    <option value="3.00pm">3.00pm-4.00pm</option>
+                    <option value="4.00pm">4.00pm-5.00pm</option>
+
+
+                                         
                   </select>
                   <!-- /.input group -->
                 </div>
@@ -203,7 +259,12 @@
                 </div> <br>
                 <!-- /.form group -->
 
-               <input type="submit" class=" btn badge-primary save" name="submit" value="SUBMIT">  
+                <div class="form-group">
+                  <label> Deposit Payment: </label>
+                  <input class="form-control" type="text" name="" value="RM50" readonly>
+                </div>
+
+               <input type="submit" class=" btn badge-primary save" name="submit" value="Proceed To Payment">  
               </div>
               <!-- /.card-body -->
             </div>
@@ -264,6 +325,9 @@
  
 <!-- Page specific script -->
 <script>
+
+  
+
   $(function () {
     //Initialize Select2 Elements
     $('.select2').select2()
@@ -288,40 +352,6 @@
   })
    
 </script>
-
-<?php          
-
-    if(isset($_POST['submit'])) 
-    {
-
-      $date = date('Y-m-d',strtotime($_POST['date']));
-      $time=$_POST['time'];
-      $treatment_name=$_POST['treatment_name'];
-      $userID= $auth["user_ID"];
-
-
-      $sql = "INSERT INTO appointment (date,time,treatment_ID,user_ID) VALUES ('$date','$time', '$treatment_name', '$userID')";
-
-      if(mysqli_query($db, $sql)=== TRUE)
-
-      {
-
-        echo '<script language="javascript">';
-        echo 'alert("Your appointment are Successfully added");';
-        echo 'window.location.href="app-list.php";';
-      echo '</script>'; 
-
-      } else
-      {
-
-         echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-      }    
-
-      } 
-
-mysqli_close($db);
-
-?>
 
 </body>
 </html>

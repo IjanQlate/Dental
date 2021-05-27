@@ -10,16 +10,7 @@ function appStatus($status){
   return $statuses[$status];
 }
 
-  function PayDeposit($deposit){
-
-  $depo = [
-      1 => 'Pending',
-      2 => 'Done',
-      
-  ];
  
-  return $depo[$deposit];
-}
 
 
 
@@ -184,7 +175,7 @@ $userID=$auth['user_ID'];
                     <th>Treatment</th>
                     <th>Status</th>
                     <th>Deposit Payment</th>
-                    <!--<th>Action</th>-->
+                    <th>Action</th>
                     
                   </tr>                   
                   </thead>
@@ -202,7 +193,11 @@ $userID=$auth['user_ID'];
                     <td><?php echo ucwords($data['treatment_name'])?></td>                    
                     <td><?php echo appStatus($data['status'])?></td>
                     <td><?php echo PayDeposit($data['deposit'])?></td>
-                    <!--<td></td>-->
+                    <td>
+                      <a target="_blank" href="<?= $data['receipt_url']?>" class="btn btn-<?= ($data['deposit'] == 2)? "success" : "info" ?>">
+                        <?= ($data['deposit'] == 2)? "View Receipt" : "Make Payment" ?>
+                      </a>
+                    </td>
                   </tr>
                   
  <?php } ?>  
