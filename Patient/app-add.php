@@ -69,6 +69,8 @@ mysqli_close($db);
   <!-- Select2 -->
   <link rel="stylesheet" href="../src/plugins/select2/css/select2.min.css">
   <link rel="stylesheet" href="../src/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../src/dist/css/adminlte.min.css">
   <!-- Ionicons -->
@@ -218,7 +220,7 @@ mysqli_close($db);
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                        </div><input type="text" name="date" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                        </div><input type="text" name="date" id="reservationdate_new" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                        
                     </div>
                 </div>
@@ -230,14 +232,15 @@ mysqli_close($db);
 
                   <select name="time" id="time" placeholder = "Choose your preffered session" class="form-control select2" style="width: 100%;">
                     
-                    <option value="8.00am">8.00am-9.00am</option>
+                    <option value="">Select Time Slot</option>
+                    <!-- <option value="8.00am">8.00am-9.00am</option>
                     <option value="9.00am">9.00am-10.00am</option>
                     <option value="10.00am">10.00am-11.00am</option>
                     <option value="11.00pm">11.00am-12.00pm</option>
                     <option value="11.00pm">12.00pm-1.00pm</option>
                     <option value="2.00pm">2.00pm-3.00pm</option>
                     <option value="3.00pm">3.00pm-4.00pm</option>
-                    <option value="4.00pm">4.00pm-5.00pm</option>
+                    <option value="4.00pm">4.00pm-5.00pm</option> -->
 
 
                                          
@@ -316,8 +319,10 @@ mysqli_close($db);
 <script src="../src/plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
 <!-- BS-Stepper -->
 <script src="../src/plugins/bs-stepper/js/bs-stepper.min.js"></script>
+<!-- TOASTR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- dropzonejs -->
-<script src="../src/plugins/dropzone/min/dropzone.min.js"></script>
+<!-- <script src="../src/plugins/dropzone/min/dropzone.min.js"></script> -->
 <!-- AdminLTE App -->
 <script src="../src/dist/js/adminlte.min.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -326,9 +331,7 @@ mysqli_close($db);
 <!-- Page specific script -->
 <script>
 
-  
-
-  $(function () {
+   $(function () {
     //Initialize Select2 Elements
     $('.select2').select2()
 
@@ -338,11 +341,81 @@ mysqli_close($db);
     })
 
 
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "8000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+
+
     //Date picker
     $('#reservationdate').datetimepicker({
         format: 'D MMMM yyyy',
-    
+        minDate:new Date()
     });   
+
+    $('#reservationdate_new').blur(function() {
+
+        if ($("#reservationdate_new").val()) {
+
+            var listoption = ["8.00am-9.00am", "9.00am-10.00am", "10.00am-11.00am", "11.00am-12.00pm", "12.00pm-1.00pm", "2.00pm-3.00pm", "3.00pm-4.00pm", "4.00pm-5.00pm"];
+
+            $.ajax({
+              url: "app-app-validate.php",
+              dataType: "json",
+              data: {
+                "selecteddate": $("#reservationdate_new").val(),
+                "function": "querydate"
+              },
+              type: "post",
+              success:function (data) {
+
+                console.log(data)
+                $("#time").find('option').not(':first').remove();
+
+                if (data == 'Time slot free'){
+                  for (i=0; i<listoption.length; i++) 
+                  {
+                    $("#time").append($("<option></option>")
+                      .attr("value", listoption[i])
+                      .text(listoption[i]));
+                  }
+                } else {
+                  var arrayreturn = [];
+
+                  for (j=0; j<data.datebook.length; j++) 
+                  {
+                    arrayreturn.push(data.datebook[j].timeslot)
+                  }
+
+                  array1 = listoption.filter(function(val) {
+                    return arrayreturn.indexOf(val) == -1;
+                  });
+
+                  for (i=0; i<array1.length; i++) 
+                  {
+                    $("#time").append($("<option></option>")
+                      .attr("value", array1[i])
+                      .text(array1[i]));
+                  }
+                }
+              }
+            })
+        }
+    });
+
 
     
     $("input[data-bootstrap-switch]").each(function(){

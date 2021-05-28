@@ -277,11 +277,20 @@ if(isset($_POST['save']))
                 <h6> Patient Name : <?php echo ucwords ( $data['fullname']); ?> </h6>
                 <h6> IC Number&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp : <?php echo ( $data['IC']); ?> </h6><p>
                 <div class="form-group"></p>
-                  <label>Date:</label>
+                  <!-- <label>Date:</label>
                     <div class="input-group date" id="reservationdate" data-target-input="nearest">
                          <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
                             <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                         </div><input type="text" name="date" class="form-control datetimepicker-input" data-target="#reservationdate"/>
+                       
+                    </div>
+                </div> -->
+                <div class="form-group">
+                  <label>Date:</label>
+                    <div class="input-group date" id="reservationdate" data-target-input="nearest">
+                         <div class="input-group-append" data-target="#reservationdate" data-toggle="datetimepicker">
+                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                        </div><input type="text" name="date" id="reservationdate_new" class="form-control datetimepicker-input" data-target="#reservationdate"/>
                        
                     </div>
                 </div>
@@ -292,14 +301,15 @@ if(isset($_POST['save']))
                   <label> Appointment session:</label>
 
                   <select name="time" id="time" placeholder = "Choose your preffered session" class="form-control select2" style="width: 100%;">
-                    <option value="8.00am">8.00am-9.00am</option>
+                  <option value="">Select Time Slot</option>
+                    <!-- <option value="8.00am">8.00am-9.00am</option>
                     <option value="9.00am">9.00am-10.00am</option>
                     <option value="10.00am">10.00am-11.00am</option>
                     <option value="11.00pm">11.00am-12.00pm</option>
                     <option value="11.00pm">12.00pm-1.00pm</option>
                     <option value="2.00pm">2.00pm-3.00pm</option>
                     <option value="3.00pm">3.00pm-4.00pm</option>
-                    <option value="4.00pm">4.00pm-5.00pm</option>                   
+                    <option value="4.00pm">4.00pm-5.00pm</option>                    -->
                   </select>
                   <!-- /.input group -->
                 </div>
@@ -310,10 +320,11 @@ if(isset($_POST['save']))
                   <label> Required Treatment:</label>
 
                   <select name="treatment_name" id="treatment" placeholder = "Choose your preffered treatment" class="form-control select2" style="width: 100%;">
+                  <option value="">Select Treatment</option>
                     <?php
-                          require "auth.php";
+                          // require "auth.php";
 
-                          $sql = mysqli_query($db, "SELECT * From treatment");
+                          $sql = mysqli_query($db, "SELECT * FROM treatment");
                           $row = mysqli_num_rows($sql);
                           while ($row = mysqli_fetch_array($sql)){
                           echo "<option value='". $row['treatment_ID'] ."'>" .$row['treatment_name'] ."</option>" ;
@@ -407,10 +418,62 @@ if(isset($_POST['save']))
 
 
     //Date picker
+    //Date picker
     $('#reservationdate').datetimepicker({
         format: 'D MMMM yyyy',
-    
+        minDate:new Date()
     });   
+
+    $('#reservationdate_new').blur(function() {
+
+        if ($("#reservationdate_new").val()) {
+
+            var listoption = ["8.00am-9.00am", "9.00am-10.00am", "10.00am-11.00am", "11.00am-12.00pm", "12.00pm-1.00pm", "2.00pm-3.00pm", "3.00pm-4.00pm", "4.00pm-5.00pm"];
+
+            $.ajax({
+              url: "app-add-validate.php",
+              dataType: "json",
+              data: {
+                "selecteddate": $("#reservationdate_new").val(),
+                "function": "querydate"
+              },
+              type: "post",
+              success:function (data) {
+
+                console.log(data)
+                $("#time").find('option').not(':first').remove();
+
+                if (data == 'Time slot free'){
+                  for (i=0; i<listoption.length; i++) 
+                  {
+                    $("#time").append($("<option></option>")
+                      .attr("value", listoption[i])
+                      .text(listoption[i]));
+                  }
+                } else {
+                  var arrayreturn = [];
+
+                  for (j=0; j<data.datebook.length; j++) 
+                  {
+                    arrayreturn.push(data.datebook[j].timeslot)
+                  }
+
+                  array1 = listoption.filter(function(val) {
+                    return arrayreturn.indexOf(val) == -1;
+                  });
+
+                  for (i=0; i<array1.length; i++) 
+                  {
+                    $("#time").append($("<option></option>")
+                      .attr("value", array1[i])
+                      .text(array1[i]));
+                  }
+                }
+              }
+            })
+        }
+    });
+
 
     
     $("input[data-bootstrap-switch]").each(function(){

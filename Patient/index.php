@@ -30,6 +30,8 @@
   <link rel="stylesheet" href="../src/plugins/summernote/summernote-bs4.min.css">
     <!-- fullCalendar -->
   <link rel="stylesheet" href="../src/plugins/fullcalendar/main.css">
+    <!-- Toastr -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/css/toastr.min.css">
   <!-- google calendar  
   <link href='../src/dist//main.css' rel='stylesheet' />
   <script src='../src/dist/main.js'></script> -->
@@ -289,6 +291,8 @@
 <script src="../src/plugins/summernote/summernote-bs4.min.js"></script>
 <!-- overlayScrollbars -->
 <script src="../src/plugins/overlayScrollbars/js/jquery.overlayScrollbars.min.js"></script>
+<!-- TOASTR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script>
 <!-- AdminLTE App -->
 <script src="../src/dist/js/adminlte.js"></script>
 <!-- AdminLTE for demo purposes -->
@@ -298,6 +302,46 @@
 <!-- fullCalendar 2.2.5 -->
 <script src="../src/plugins/moment/moment.min.js"></script>
 <script src="../src/plugins/fullcalendar/main.js"></script>
+<script>
+  $(function () {
+  
+    toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": true,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": true,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "8000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+    }
+  
+    $.ajax({
+      url: "app-app-validate.php",
+      dataType: "json",
+      type: "post",
+      data:{
+        "function": "reminder"
+      },
+      success: function (response) {
 
+        console.log(response)
+        if (response != "No appointment today") {
+          toastr.error("You have an appointment today:- <br />Date: " + response.date + "<br />Timeslot: " + response.timeslot + "", "Appointment Reminder")
+        }
+
+      }
+    })
+
+  })
+
+</script>
 </body>
 </html>
